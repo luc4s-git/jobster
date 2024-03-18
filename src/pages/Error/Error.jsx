@@ -44,7 +44,7 @@ export default function Error() {
           {user ? (
             <Link to="/">back home</Link>
           ) : (
-            <Link to="/register">back home</Link>
+            <Link to="/landing">back home</Link>
           )}
         </div>
       </Wrapper>
