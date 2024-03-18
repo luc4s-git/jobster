@@ -6,6 +6,9 @@ import { toast } from 'react-toastify';
 
 import { Form } from 'react-router-dom';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { registerUser, loginUser } from '../../features/user/userSlice';
+
 const Wrapper = styled.section`
   display: grid;
   place-items: center;
@@ -46,14 +49,24 @@ const initialState = {
 
 export default function Register() {
   const [values, setValues] = useState(initialState);
+  const { user, isLoading } = useSelector((store) => store.user);
+  const dispatch = useDispatch();
 
   const onSubmit = (e) => {
     e.preventDefault();
     const { name, email, password, isMember } = values;
-    if (!email || !password || (!isMember && !name))
-      return toast.warn('Please fill out all fields.');
 
-    console.log(values);
+    if (!email || !password || (!isMember && !name)) {
+      toast.warn('Please fill out all fields.');
+      return;
+    }
+
+    if (isMember) {
+      dispatch(loginUser({ email: email, password: password }));
+      return;
+    }
+
+    dispatch(registerUser({ name, email, password }));
   };
 
   const handleChange = (e) => {
