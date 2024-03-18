@@ -76,17 +76,19 @@ export default function Register() {
     <Wrapper className="full-page">
       <Form className="form" onSubmit={(e) => onSubmit(e)}>
         <Logo className="logo" />
-        <h3>login</h3>
+        <h3>{values.isMember ? 'Login' : 'Register'}</h3>
 
         {/* name field */}
 
-        <FormInput
-          name="name"
-          label="name"
-          type="text"
-          value={values.name}
-          onChange={handleChange}
-        />
+        {!values.isMember && (
+          <FormInput
+            name="name"
+            label="name"
+            type="text"
+            value={values.name}
+            onChange={handleChange}
+          />
+        )}
 
         {/* email field */}
         <FormInput
@@ -113,9 +115,9 @@ export default function Register() {
           demo app
         </button>
         <p>
-          Already a member?
+          {values.isMember ? 'Not a member yet?' : 'Already a member?'}
           <button className="member-btn" type="button" onClick={toggleMember}>
-            Login
+            {values.isMember ? 'Register' : 'Login'}
           </button>
         </p>
       </Form>
