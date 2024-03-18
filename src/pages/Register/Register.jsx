@@ -1,6 +1,9 @@
-import { useState, useEffect } from 'react';
-import { Logo } from '../../components';
+import { useState } from 'react';
+
+import { Logo, FormInput } from '../../components';
 import styled from 'styled-components';
+
+import { Form } from 'react-router-dom';
 
 const Wrapper = styled.section`
   display: grid;
@@ -29,6 +32,7 @@ const Wrapper = styled.section`
     border: none;
     letter-spacing: 1px;
     color: var(--primary-500);
+    cursor: pointer;
   }
 `;
 
@@ -44,7 +48,7 @@ export default function Register() {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log(e.target);
+    console.log(values);
   };
 
   const handleChange = (e) => {
@@ -63,50 +67,45 @@ export default function Register() {
     console.log(e.target.value);
   };
 
+  const toggleMember = () => {
+    setValues({ ...values, isMember: !values.isMember });
+    console.log(values.isMember);
+  };
+
   return (
     <Wrapper className="full-page">
-      <form className="form" onSubmit={(e) => onSubmit(e)}>
+      <Form className="form" onSubmit={(e) => onSubmit(e)}>
         <Logo className="logo" />
-        <h3>Login</h3>
-        {/* name */}
-        <div className="form-row">
-          <label htmlFor="name" className="form-label">
-            name
-          </label>
-          <input
-            className="form-input"
-            type="text"
-            id="name"
-            value={values.name}
-            onChange={(e) => handleChange(e)}
-          />
-        </div>
-        {/* email */}
-        <div className="form-row">
-          <label htmlFor="email" className="form-label">
-            email
-          </label>
-          <input
-            className="form-input"
-            type="text"
-            id="email"
-            value={values.email}
-            onChange={(e) => handleChange(e)}
-          />
-        </div>
-        {/* password */}
-        <div className="form-row">
-          <label htmlFor="password" className="form-label">
-            password
-          </label>
-          <input
-            className="form-input"
-            type="text"
-            id="password"
-            value={values.password}
-            onChange={(e) => handleChange(e)}
-          />
-        </div>
+        <h3>login</h3>
+
+        {/* name field */}
+
+        <FormInput
+          name="name"
+          label="name"
+          type="text"
+          value={values.name}
+          onChange={handleChange}
+        />
+
+        {/* email field */}
+        <FormInput
+          name="email"
+          label="email"
+          type="email"
+          value={values.email}
+          onChange={handleChange}
+        />
+
+        {/* password field */}
+        <FormInput
+          name="password"
+          label="password"
+          type="password"
+          value={values.password}
+          onChange={handleChange}
+        />
+
         <button type="submit" className="btn btn-block">
           submit
         </button>
@@ -115,11 +114,11 @@ export default function Register() {
         </button>
         <p>
           Already a member?
-          <button className="member-btn" type="button">
+          <button className="member-btn" type="button" onClick={toggleMember}>
             Login
           </button>
         </p>
-      </form>
+      </Form>
     </Wrapper>
   );
 }
