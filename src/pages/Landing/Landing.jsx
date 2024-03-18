@@ -1,7 +1,9 @@
-import image from '../assets/images/undraw_team_page_re_cffb.svg';
+import image from '../../assets/images/undraw_team_page_re_cffb.svg';
 import styled from 'styled-components';
 
-import { Logo } from '../components';
+import { Link } from 'react-router-dom';
+
+import { Logo } from '../../components';
 
 const Wrapper = styled.main`
   nav {
@@ -65,7 +67,9 @@ export default function Landing() {
             possimus quam nemo quod obcaecati, magni itaque dignissimos
             reiciendis fuga voluptate?
           </p>
-          <button className="btn btn-hero">login/register</button>
+          <Link to={'/register'} className="btn btn-hero">
+            login/register
+          </Link>
         </div>
         <div className="img-container">
           <img
