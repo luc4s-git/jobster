@@ -50,6 +50,7 @@ const initialState = {
 export default function Register() {
   const [values, setValues] = useState(initialState);
   const { user, isLoading } = useSelector((store) => store.user);
+
   const dispatch = useDispatch();
 
   const onSubmit = (e) => {
@@ -116,11 +117,15 @@ export default function Register() {
           onChange={handleChange}
         />
 
-        <button type="submit" className="btn btn-block">
-          submit
+        <button type="submit" className="btn btn-block" disabled={isLoading}>
+          {isLoading ? 'Loading...' : 'submit'}
         </button>
-        <button type="button" className="btn btn-hipster btn-block">
-          demo app
+        <button
+          type="button"
+          className="btn btn-hipster btn-block"
+          disabled={isLoading}
+        >
+          {isLoading ? 'Loading...' : 'demo app'}
         </button>
         <p>
           {values.isMember ? 'Not a member yet?' : 'Already a member?'}

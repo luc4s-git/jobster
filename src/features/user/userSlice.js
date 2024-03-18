@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 import { instance } from '../../utils';
 
-import { redirect } from 'react-router-dom';
+// import { redirect } from 'react-router-dom';
 
 const initialState = {
   isLoading: false,
@@ -12,20 +12,32 @@ const initialState = {
 const userSlice = createSlice({
   name: 'user',
   initialState: initialState,
+  extraReducers: (builder) => {
+    builder
+      .addCase(registerUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(registerUser.fulfilled, (state, { payload }) => {
+        const { user } = payload;
+        state.isLoading = false;
+        state.user = user;
+        toast.success(`Hello there ${user.name}`);
+      })
+      .addCase(registerUser.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        toast.error(payload);
+      });
+  },
 });
 
 export const registerUser = createAsyncThunk(
   'user/registerUser',
-  async (user) => {
+  async (user, thunkAPI) => {
     try {
       const response = await instance.post('/auth/testingRegister', user);
-
-      if (response.status === 201) {
-        toast.success(`Welcome ${user.name}`);
-        return redirect('/');
-      }
+      return response.data;
     } catch (error) {
-      console.error(error);
+      return thunkAPI.rejectWithValue(error.response.data.msg);
     }
   }
 );
