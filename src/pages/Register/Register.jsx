@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import { Logo, FormInput } from '../../components';
 import styled from 'styled-components';
+import { toast } from 'react-toastify';
 
 import { Form } from 'react-router-dom';
 
@@ -48,28 +49,22 @@ export default function Register() {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    const { name, email, password, isMember } = values;
+    if (!email || !password || (!isMember && !name))
+      return toast.warn('Please fill out all fields.');
+
     console.log(values);
   };
 
   const handleChange = (e) => {
-    if (e.target.id === 'name') {
-      return setValues({ ...values, name: e.target.value });
-    }
+    const name = e.target.name;
+    const value = e.target.value;
 
-    if (e.target.id === 'email') {
-      return setValues({ ...values, email: e.target.value });
-    }
-
-    if (e.target.id === 'password') {
-      return setValues({ ...values, password: e.target.value });
-    }
-
-    console.log(e.target.value);
+    setValues({ ...values, [name]: value });
   };
 
   const toggleMember = () => {
-    setValues({ ...values, isMember: !values.isMember });
-    console.log(values.isMember);
+    setValues({ ...values, isMember: !values.isMember, name: '' });
   };
 
   return (

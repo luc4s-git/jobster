@@ -14,6 +14,7 @@ export default function FormInput({
       <input
         className="form-input"
         type={type}
+        name={name}
         id={name}
         value={value}
         onChange={(e) => onChange(e)}
