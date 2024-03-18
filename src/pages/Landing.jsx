@@ -1,6 +1,7 @@
-import logo from '../assets/images/logo.svg';
 import image from '../assets/images/undraw_team_page_re_cffb.svg';
 import styled from 'styled-components';
+
+import { Logo } from '../components';
 
 const Wrapper = styled.main`
   nav {
@@ -51,7 +52,7 @@ export default function Landing() {
   return (
     <Wrapper>
       <nav>
-        <img src={logo} alt="jobster logo" className="logo" />
+        <Logo />
       </nav>
       <div className="container page">
         <div className="info">
