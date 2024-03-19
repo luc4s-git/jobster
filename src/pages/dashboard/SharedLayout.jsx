@@ -4,6 +4,8 @@ import { Navbar, SmallSidebar, BigSidebar } from '../../components';
 import styled from 'styled-components';
 
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const Wrapper = styled.section`
   .dashboard {
@@ -26,7 +28,12 @@ const Wrapper = styled.section`
 `;
 
 export default function SharedLayout() {
-  const { isSidebarOpen } = useSelector((store) => store.user);
+  const { user, isSidebarOpen } = useSelector((store) => store.user);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user) return navigate('/landing');
+  }, [user, navigate]);
 
   return (
     <Wrapper>

@@ -10,7 +10,8 @@ import styled from 'styled-components';
 
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { toggleSideBar } from '../../features/user/userSlice';
+import { toggleSideBar, logoutUser } from '../../features/user/userSlice';
+import { useNavigate } from 'react-router-dom';
 
 const Wrapper = styled.nav`
   height: var(--nav-height);
@@ -97,6 +98,7 @@ const Wrapper = styled.nav`
 export default function Navbar() {
   const { user } = useSelector((store) => store.user);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   return (
@@ -127,7 +129,10 @@ export default function Navbar() {
             <button
               type="button"
               className="dropdown-btn"
-              onClick={() => console.log('logout user')}
+              onClick={() => {
+                navigate('/landing');
+                dispatch(logoutUser());
+              }}
             >
               logout
             </button>

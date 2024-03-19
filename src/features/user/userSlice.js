@@ -2,11 +2,10 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 import { instance } from '../../utils';
 
-// import { redirect } from 'react-router-dom';
-
 import {
   getUserFromLocalStorage,
   addUserToLocalStorage,
+  removeUserFromLocalStorage,
 } from '../../utils/localStorageManipulation';
 
 const initialState = {
@@ -48,6 +47,12 @@ const userSlice = createSlice({
     toggleSideBar: (state) => {
       state.isSidebarOpen = !state.isSidebarOpen;
     },
+    logoutUser: (state) => {
+      state.user = null;
+      state.isSidebarOpen = false;
+      toast.success('Logging out...');
+      removeUserFromLocalStorage();
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -81,4 +86,4 @@ const userSlice = createSlice({
 });
 
 export default userSlice.reducer;
-export const { toggleSideBar } = userSlice.actions;
+export const { toggleSideBar, logoutUser } = userSlice.actions;
