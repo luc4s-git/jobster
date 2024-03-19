@@ -1,3 +1,3 @@
 export default function Stats() {
-  return <div>Stats</div>;
+  return <h1>Stats</h1>;
 }
