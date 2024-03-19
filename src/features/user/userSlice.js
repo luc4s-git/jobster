@@ -11,8 +11,7 @@ import {
 
 const initialState = {
   isLoading: false,
-  isSidebarOpen: false,
-  isDropdownOpen: false,
+  isSidebarOpen: true,
   user: getUserFromLocalStorage(),
 };
 
@@ -46,9 +45,6 @@ const userSlice = createSlice({
   name: 'user',
   initialState: initialState,
   reducers: {
-    toggleDropdown: (state) => {
-      state.isDropdownOpen = !state.isDropdownOpen;
-    },
     toggleSideBar: (state) => {
       state.isSidebarOpen = !state.isSidebarOpen;
     },
@@ -85,4 +81,4 @@ const userSlice = createSlice({
 });
 
 export default userSlice.reducer;
-export const { toggleDropdown, toggleSideBar } = userSlice.actions;
+export const { toggleSideBar } = userSlice.actions;

@@ -8,8 +8,9 @@ import Logo from '../header/Logo';
 
 import styled from 'styled-components';
 
+import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { toggleDropdown, toggleSideBar } from '../../features/user/userSlice';
+import { toggleSideBar } from '../../features/user/userSlice';
 
 const Wrapper = styled.nav`
   height: var(--nav-height);
@@ -94,8 +95,9 @@ const Wrapper = styled.nav`
 `;
 
 export default function Navbar() {
-  const { user, isDropdownOpen } = useSelector((store) => store.user);
+  const { user } = useSelector((store) => store.user);
   const dispatch = useDispatch();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   return (
     <Wrapper>
@@ -115,7 +117,7 @@ export default function Navbar() {
           <button
             className="btn"
             type="button"
-            onClick={() => dispatch(toggleDropdown())}
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           >
             <FaUserCircle />
             {user?.name}
