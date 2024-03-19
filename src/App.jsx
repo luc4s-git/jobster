@@ -11,13 +11,19 @@ import {
   Stats,
 } from './pages';
 
+import ProtectedRoute from './pages/ProtectedRoute';
+
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <SharedLayout />,
+    element: (
+      <ProtectedRoute>
+        <SharedLayout />
+      </ProtectedRoute>
+    ),
     errorElement: <Error />,
     children: [
       {
