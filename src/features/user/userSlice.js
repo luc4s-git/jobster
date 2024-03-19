@@ -9,6 +9,30 @@ const initialState = {
   user: null,
 };
 
+export const registerUser = createAsyncThunk(
+  'user/registerUser',
+  async (user, thunkAPI) => {
+    try {
+      const response = await instance.post('/auth/register', user);
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.msg);
+    }
+  }
+);
+
+export const loginUser = createAsyncThunk(
+  'user/loginUser',
+  async (user, thunkAPI) => {
+    try {
+      const response = await instance.post('/auth/login', user);
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.msg);
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: 'user',
   initialState: initialState,
@@ -18,7 +42,7 @@ const userSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(registerUser.fulfilled, (state, { payload }) => {
-        const { user } = payload;
+        const { user } = payload; // payload comes from asyncThunk
         state.isLoading = false;
         state.user = user;
         toast.success(`Hello there ${user.name}`);
@@ -26,24 +50,21 @@ const userSlice = createSlice({
       .addCase(registerUser.rejected, (state, { payload }) => {
         state.isLoading = false;
         toast.error(payload);
+      })
+      .addCase(loginUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(loginUser.fulfilled, (state, { payload }) => {
+        const { user } = payload;
+        state.isLoading = false;
+        state.user = user;
+        toast.success(`Welcome back ${user.name}`);
+      })
+      .addCase(loginUser.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        toast.error(payload);
       });
   },
-});
-
-export const registerUser = createAsyncThunk(
-  'user/registerUser',
-  async (user, thunkAPI) => {
-    try {
-      const response = await instance.post('/auth/testingRegister', user);
-      return response.data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data.msg);
-    }
-  }
-);
-
-export const loginUser = createAsyncThunk('user/loginUser', async (user) => {
-  console.log(`Login user: ${JSON.stringify(user)}`);
 });
 
 export default userSlice.reducer;
