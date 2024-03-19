@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { Logo, FormInput } from '../../components';
 import styled from 'styled-components';
 import { toast } from 'react-toastify';
 
-import { Form } from 'react-router-dom';
+import { Form, useNavigate } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser, loginUser } from '../../features/user/userSlice';
@@ -52,6 +52,7 @@ export default function Register() {
   const { user, isLoading } = useSelector((store) => store.user);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -80,6 +81,14 @@ export default function Register() {
   const toggleMember = () => {
     setValues({ ...values, isMember: !values.isMember, name: '' });
   };
+
+  useEffect(() => {
+    if (user) {
+      setTimeout(() => {
+        navigate('/');
+      }, 3000);
+    }
+  }, [user, navigate]);
 
   return (
     <Wrapper className="full-page">
