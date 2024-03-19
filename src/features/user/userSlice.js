@@ -4,9 +4,14 @@ import { instance } from '../../utils';
 
 // import { redirect } from 'react-router-dom';
 
+import {
+  getUserFromLocalStorage,
+  addUserToLocalStorage,
+} from '../../utils/localStorageManipulation';
+
 const initialState = {
   isLoading: false,
-  user: null,
+  user: getUserFromLocalStorage(),
 };
 
 export const registerUser = createAsyncThunk(
@@ -14,6 +19,7 @@ export const registerUser = createAsyncThunk(
   async (user, thunkAPI) => {
     try {
       const response = await instance.post('/auth/register', user);
+      addUserToLocalStorage(response.data.user);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data.msg);
@@ -26,6 +32,7 @@ export const loginUser = createAsyncThunk(
   async (user, thunkAPI) => {
     try {
       const response = await instance.post('/auth/login', user);
+      addUserToLocalStorage(response.data.user);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data.msg);
