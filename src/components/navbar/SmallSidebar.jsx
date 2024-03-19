@@ -1,11 +1,9 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleSideBar } from '../../features/user/userSlice';
-import { NavLink } from 'react-router-dom';
-
 import styled from 'styled-components';
 import { FaTimes } from 'react-icons/fa';
 import Logo from '../header/Logo';
-import links from '../../utils/links';
+import NavLinks from './NavLinks';
 
 const Wrapper = styled.aside`
   @media (min-width: 992px) {
@@ -85,37 +83,21 @@ export default function SmallSidebar() {
   const { isSidebarOpen } = useSelector((store) => store.user);
   const dispatch = useDispatch();
 
+  const toggle = () => {
+    dispatch(toggleSideBar());
+  };
+
   return (
     <Wrapper>
       <div className={`sidebar-container ${isSidebarOpen && 'show-sidebar'}`}>
         <div className="content">
-          <button
-            type="button"
-            className="close-btn"
-            onClick={() => dispatch(toggleSideBar())}
-          >
+          <button type="button" className="close-btn" onClick={toggle}>
             <FaTimes />
           </button>
           <header>
             <Logo />
           </header>
-          <div className="nav-links">
-            {links.map((item) => {
-              return (
-                <NavLink
-                  className={({ isActive }) => {
-                    return isActive ? 'nav-link active' : 'nav-link';
-                  }}
-                  key={item.id}
-                  to={item.path}
-                  onClick={() => dispatch(toggleSideBar())}
-                >
-                  <span className="icon">{item.icon}</span>
-                  {item.text}
-                </NavLink>
-              );
-            })}
-          </div>
+          <NavLinks toggleSidebar={toggle} />
         </div>
       </div>
     </Wrapper>
