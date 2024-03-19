@@ -125,7 +125,9 @@ export default function Navbar() {
             {user?.name}
             {isDropdownOpen ? <FaCaretUp /> : <FaCaretDown />}
           </button>
-          <div className={`dropdown ${isDropdownOpen && 'show-dropdown'}`}>
+          <div
+            className={isDropdownOpen ? 'show-dropdown dropdown' : 'dropdown'}
+          >
             <button
               type="button"
               className="dropdown-btn"

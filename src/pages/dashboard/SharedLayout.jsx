@@ -3,8 +3,6 @@ import { Navbar, SmallSidebar, BigSidebar } from '../../components';
 
 import styled from 'styled-components';
 
-import { useSelector } from 'react-redux';
-
 const Wrapper = styled.section`
   .dashboard {
     display: grid;
@@ -26,13 +24,11 @@ const Wrapper = styled.section`
 `;
 
 export default function SharedLayout() {
-  const { isSidebarOpen } = useSelector((store) => store.user);
-
   return (
     <Wrapper>
       <main className="dashboard">
         <SmallSidebar />
-        {isSidebarOpen && <BigSidebar />}
+        <BigSidebar />
         <div>
           <Navbar />
           <div className="dashboard-page">
