@@ -9,9 +9,8 @@ import {
   AllJobs,
   Profile,
   Stats,
+  ProtectedRoute,
 } from './pages';
-
-import ProtectedRoute from './pages/ProtectedRoute';
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';

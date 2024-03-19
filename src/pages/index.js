@@ -7,3 +7,5 @@ export { default as AllJobs } from './dashboard/AllJobs.jsx';
 export { default as AddJobs } from './dashboard/AddJob.jsx';
 export { default as Profile } from './dashboard/Profile.jsx';
 export { default as Stats } from './dashboard/Stats.jsx';
+
+export { default as ProtectedRoute } from './ProtectedRoute.jsx';

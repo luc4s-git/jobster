@@ -1,4 +1,9 @@
+import { useSelector, useDispatch } from 'react-redux';
+import { toggleSideBar } from '../../features/user/userSlice';
+
 import styled from 'styled-components';
+import { FaTimes } from 'react-icons/fa';
+import Logo from '../header/Logo';
 
 const Wrapper = styled.aside`
   @media (min-width: 992px) {
@@ -75,9 +80,26 @@ const Wrapper = styled.aside`
 `;
 
 export default function SmallSidebar() {
+  const { isSidebarOpen } = useSelector((store) => store.user);
+  const dispatch = useDispatch();
+
   return (
     <Wrapper>
-      <h1>SmallSidebar</h1>
+      <div className={`sidebar-container ${isSidebarOpen && 'show-sidebar'}`}>
+        <div className="content">
+          <button
+            type="button"
+            className="close-btn"
+            onClick={() => dispatch(toggleSideBar())}
+          >
+            <FaTimes />
+          </button>
+          <header>
+            <Logo />
+          </header>
+          <div className="nav-link">nav links</div>
+        </div>
+      </div>
     </Wrapper>
   );
 }
