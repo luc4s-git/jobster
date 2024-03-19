@@ -1,6 +1,15 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
-import { Landing, Error, Dashboard, Register } from './pages';
+import {
+  Landing,
+  Error,
+  SharedLayout,
+  Register,
+  AddJobs,
+  AllJobs,
+  Profile,
+  Stats,
+} from './pages';
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -8,8 +17,26 @@ import 'react-toastify/dist/ReactToastify.css';
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Dashboard />,
+    element: <SharedLayout />,
     errorElement: <Error />,
+    children: [
+      {
+        index: true,
+        element: <Stats />,
+      },
+      {
+        path: '/all-jobs',
+        element: <AllJobs />,
+      },
+      {
+        path: '/add-job',
+        element: <AddJobs />,
+      },
+      {
+        path: '/profile',
+        element: <Profile />,
+      },
+    ],
   },
   {
     path: '/register',

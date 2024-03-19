@@ -1,11 +1,8 @@
 import { useState, useEffect } from 'react';
-
 import { Logo, FormInput } from '../../components';
 import styled from 'styled-components';
 import { toast } from 'react-toastify';
-
 import { Form, useNavigate } from 'react-router-dom';
-
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser, loginUser } from '../../features/user/userSlice';
 
