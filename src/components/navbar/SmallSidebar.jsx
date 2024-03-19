@@ -1,9 +1,11 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleSideBar } from '../../features/user/userSlice';
+import { NavLink } from 'react-router-dom';
 
 import styled from 'styled-components';
 import { FaTimes } from 'react-icons/fa';
 import Logo from '../header/Logo';
+import links from '../../utils/links';
 
 const Wrapper = styled.aside`
   @media (min-width: 992px) {
@@ -97,7 +99,23 @@ export default function SmallSidebar() {
           <header>
             <Logo />
           </header>
-          <div className="nav-link">nav links</div>
+          <div className="nav-links">
+            {links.map((item) => {
+              return (
+                <NavLink
+                  className={({ isActive }) => {
+                    return isActive ? 'nav-link active' : 'nav-link';
+                  }}
+                  key={item.id}
+                  to={item.path}
+                  onClick={() => dispatch(toggleSideBar())}
+                >
+                  <span className="icon">{item.icon}</span>
+                  {item.text}
+                </NavLink>
+              );
+            })}
+          </div>
         </div>
       </div>
     </Wrapper>
