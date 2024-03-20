@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { FormInput } from '../../components/index';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
+import { updateUser } from '../../features/user/userSlice';
 
 import styled from 'styled-components';
 const Wrapper = styled.section`
@@ -72,7 +73,7 @@ const Wrapper = styled.section`
 export default function Profile() {
   const { isLoading, user } = useSelector((store) => store.user);
 
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const [userData, setUserData] = useState({
     name: user?.name || '',
@@ -90,6 +91,8 @@ export default function Profile() {
       toast.error('Please fill out all fields.');
       return;
     }
+
+    dispatch(updateUser(userData));
   };
 
   const handleChange = (e) => {
