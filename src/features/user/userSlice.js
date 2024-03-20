@@ -51,7 +51,7 @@ export const updateUser = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       });
-      
+
       return response.data;
     } catch (error) {
       console.error(error.response);
@@ -109,6 +109,8 @@ const userSlice = createSlice({
         const { user } = payload;
         state.isLoading = false;
         state.user = user;
+
+        addUserToLocalStorage(user);
         toast.success('User updated');
       })
       .addCase(updateUser.rejected, (state, { payload }) => {
