@@ -1,22 +1,17 @@
-export default function FormSelect({
-  name,
-  value,
-  handleChange,
-  jobTypeOptions,
-}) {
+export default function FormSelect({ name, value, label, onChange, list }) {
   return (
     <div className="form-row">
       <label htmlFor={name} className="form-label">
-        status
+        {label}
       </label>
       <select
         name={name}
         id={name}
         value={value}
-        onChange={handleChange}
+        onChange={onChange}
         className="form-select"
       >
-        {jobTypeOptions.map((option, index) => {
+        {list.map((option, index) => {
           return (
             <option key={index} value={option}>
               {option}

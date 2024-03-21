@@ -137,9 +137,19 @@ export default function AddJob() {
           <FormSelect
             name={'status'}
             value={status}
-            jobTypeOptions={jobTypeOptions}
-            handleChange={handleChange}
+            label={'status'}
+            list={statusOptions}
+            onChange={handleChange}
           ></FormSelect>
+          {/* job type */}
+          <FormSelect
+            name={'jobType'}
+            value={jobType}
+            label={'job type'}
+            list={jobTypeOptions}
+            onChange={handleChange}
+          ></FormSelect>
+
           <div className="btn-container">
             <button
               type="button"
