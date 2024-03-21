@@ -48,13 +48,17 @@ export const updateUser = createAsyncThunk(
 
       const response = await instance.patch('/auth/updateUser', user, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token} `,
         },
       });
 
       return response.data;
     } catch (error) {
-      console.error(error.response);
+      if (error.response.status === 401) {
+        thunkAPI.dispatch(logoutUser());
+        return thunkAPI.rejectWithValue('Unauthorized action! Logging out...');
+      }
+
       return thunkAPI.rejectWithValue(error.response.data.msg);
     }
   }
