@@ -7,7 +7,7 @@ const initialState = {
   isLoading: false,
   position: '',
   company: '',
-  jobLocation: '',
+  jobLocation: getUserFromLocalStorage().location || '',
   jobTypeOptions: ['full-time', 'part-time', 'remote', 'internship'],
   jobType: 'full-time',
   statusOptions: ['interview', 'declined', 'pending'],
@@ -23,6 +23,10 @@ const jobSlice = createSlice({
     handleInputValues: (state, { payload: { name, value } }) => {
       state[name] = value;
     },
+    clearInputValues: (state) => {
+      state.position = '';
+      state.company = '';
+    },
   },
 });
 
@@ -32,4 +36,4 @@ export const addJob = createAsyncThunk('job/addJob', async (thunkAPI) => {
 });
 
 export default jobSlice.reducer;
-export const { handleInputValues } = jobSlice.actions;
+export const { handleInputValues, clearInputValues } = jobSlice.actions;

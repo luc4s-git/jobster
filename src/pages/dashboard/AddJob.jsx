@@ -1,8 +1,11 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { handleInputValues } from '../../features/job/jobSlice';
+import {
+  handleInputValues,
+  clearInputValues,
+} from '../../features/job/jobSlice';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
-import { FormInput } from '../../components/index';
+import { FormInput, FormSelect } from '../../components/index';
 
 const Wrapper = styled.section`
   border-radius: var(--borderRadius);
@@ -130,11 +133,18 @@ export default function AddJob() {
             label={'job location'}
             onChange={handleChange}
           ></FormInput>
+          {/* status */}
+          <FormSelect
+            name={'status'}
+            value={status}
+            jobTypeOptions={jobTypeOptions}
+            handleChange={handleChange}
+          ></FormSelect>
           <div className="btn-container">
             <button
               type="button"
               className="btn btn-block clear-btn"
-              onClick={() => console.log('clear values')}
+              onClick={() => dispatch(clearInputValues())}
             >
               Clear
             </button>
