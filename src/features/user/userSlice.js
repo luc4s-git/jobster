@@ -8,6 +8,12 @@ import {
   removeUserFromLocalStorage,
 } from '../../utils/localStorageManipulation';
 
+import {
+  registerUserThunk,
+  loginUserThunk,
+  updateUserThunk,
+} from './userThunk';
+
 const initialState = {
   isLoading: false,
   isSidebarOpen: false,
@@ -17,50 +23,21 @@ const initialState = {
 export const registerUser = createAsyncThunk(
   'user/registerUser',
   async (user, thunkAPI) => {
-    try {
-      const response = await instance.post('/auth/register', user);
-      addUserToLocalStorage(response.data.user);
-      return response.data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data.msg);
-    }
+    return registerUserThunk('/auth/register', user, thunkAPI);
   }
 );
 
 export const loginUser = createAsyncThunk(
   'user/loginUser',
   async (user, thunkAPI) => {
-    try {
-      const response = await instance.post('/auth/login', user);
-      addUserToLocalStorage(response.data.user);
-      return response.data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data.msg);
-    }
+    return loginUserThunk('/auth/login', user, thunkAPI);
   }
 );
 
 export const updateUser = createAsyncThunk(
   'user/updateUser',
   async (user, thunkAPI) => {
-    try {
-      const { token } = thunkAPI.getState().user.user;
-
-      const response = await instance.patch('/auth/updateUser', user, {
-        headers: {
-          Authorization: `Bearer ${token} `,
-        },
-      });
-
-      return response.data;
-    } catch (error) {
-      if (error.response.status === 401) {
-        thunkAPI.dispatch(logoutUser());
-        return thunkAPI.rejectWithValue('Unauthorized action! Logging out...');
-      }
-
-      return thunkAPI.rejectWithValue(error.response.data.msg);
-    }
+    return updateUserThunk('/auth/updateUser', user, thunkAPI);
   }
 );
 
@@ -87,6 +64,8 @@ const userSlice = createSlice({
         const { user } = payload; // payload comes from asyncThunk
         state.isLoading = false;
         state.user = user;
+
+        addUserToLocalStorage(user);
         toast.success(`Hello there ${user.name}`);
       })
       .addCase(registerUser.rejected, (state, { payload }) => {
@@ -100,6 +79,8 @@ const userSlice = createSlice({
         const { user } = payload;
         state.isLoading = false;
         state.user = user;
+
+        addUserToLocalStorage(user);
         toast.success(`Welcome back ${user.name}`);
       })
       .addCase(loginUser.rejected, (state, { payload }) => {
