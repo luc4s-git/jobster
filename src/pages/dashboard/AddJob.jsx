@@ -2,6 +2,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   handleInputValues,
   clearInputValues,
+  addJob,
 } from '../../features/job/jobSlice';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
@@ -74,7 +75,7 @@ const Wrapper = styled.section`
 
 export default function AddJob() {
   const {
-    isLoading,
+    // isLoading,
     position,
     company,
     jobLocation,
@@ -83,7 +84,7 @@ export default function AddJob() {
     statusOptions,
     status,
     isEditing,
-    editJobId,
+    // editJobId,
   } = useSelector((store) => store.job);
 
   const dispatch = useDispatch();
@@ -102,6 +103,8 @@ export default function AddJob() {
       toast.error('Please fill out all fields');
       return;
     }
+
+    dispatch(addJob({ position, company, jobLocation, jobType, status }));
   };
 
   return (

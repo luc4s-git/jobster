@@ -16,6 +16,20 @@ const initialState = {
   editJobId: '',
 };
 
+export const addJob = createAsyncThunk('job/addJob', async (job, thunkAPI) => {
+  try {
+    const { token } = thunkAPI.getState().user.user;
+    const response = await instance.post('/jobs', job, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.response.data.msg);
+  }
+});
+
 const jobSlice = createSlice({
   name: 'job',
   initialState: initialState,
@@ -23,16 +37,26 @@ const jobSlice = createSlice({
     handleInputValues: (state, { payload: { name, value } }) => {
       state[name] = value;
     },
-    clearInputValues: (state) => {
-      state.position = '';
-      state.company = '';
+    clearInputValues: () => {
+      return {
+        ...initialState,
+      };
     },
   },
-});
-
-export const addJob = createAsyncThunk('job/addJob', async (thunkAPI) => {
-  const url = '/jobs';
-  console.log(getUserFromLocalStorage());
+  extraReducers: (builder) => {
+    builder
+      .addCase(addJob.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(addJob.fulfilled, (state) => {
+        state.isLoading = false;
+        toast.success('Job Created!');
+      })
+      .addCase(addJob.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        toast.error(payload);
+      });
+  },
 });
 
 export default jobSlice.reducer;
