@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
-import { instance } from '../../utils';
 import { getUserFromLocalStorage } from '../../utils/localStorageManipulation';
-import { logoutUser } from '../user/userSlice';
+
+import { addJobThunk, getAllJobsThunk } from './jobThunk';
 
 const initialState = {
   isLoading: false,
@@ -18,42 +18,13 @@ const initialState = {
 };
 
 export const addJob = createAsyncThunk('job/addJob', async (job, thunkAPI) => {
-  try {
-    const { token } = thunkAPI.getState().user.user;
-    const response = await instance.post('/jobs', job, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response.data;
-  } catch (error) {
-    if (error.status === 401) {
-      thunkAPI.dispatch(logoutUser());
-      return thunkAPI.rejectWithValue('Unauthorized action! Logging out...');
-    }
-    return thunkAPI.rejectWithValue(error.response.data.msg);
-  }
+  return addJobThunk('/jobs', job, thunkAPI);
 });
 
 export const getAllJobs = createAsyncThunk(
   'job/getAllJobs',
   async (job, thunkAPI) => {
-    try {
-      const { token } = thunkAPI.getState().user.user;
-      const response = await instance.get('/jobs', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      return response.data;
-    } catch (error) {
-      if (error.status === 401) {
-        thunkAPI.dispatch(logoutUser());
-        return thunkAPI.rejectWithValue('Unauthorized action! Logging out...');
-      }
-      return thunkAPI.rejectWithValue(error.response.data.msg);
-    }
+    return getAllJobsThunk('/jobs', job, thunkAPI);
   }
 );
 
