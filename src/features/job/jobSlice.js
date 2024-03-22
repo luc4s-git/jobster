@@ -8,7 +8,7 @@ const initialState = {
   isLoading: false,
   position: '',
   company: '',
-  jobLocation: getUserFromLocalStorage().location || '',
+  jobLocation: getUserFromLocalStorage()?.location || '',
   jobTypeOptions: ['full-time', 'part-time', 'remote', 'internship'],
   jobType: 'full-time',
   statusOptions: ['interview', 'declined', 'pending'],

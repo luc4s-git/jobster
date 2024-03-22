@@ -133,7 +133,7 @@ export default function Navbar() {
               className="dropdown-btn"
               onClick={() => {
                 navigate('/landing');
-                dispatch(logoutUser());
+                dispatch(logoutUser('Logging out...'));
               }}
             >
               logout
