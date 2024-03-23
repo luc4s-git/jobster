@@ -1,7 +1,10 @@
-import { useDispatch } from 'react-redux';
-import { getAllJobs } from '../../features/job/jobSlice';
+import { JobsContainer, SearchContainer } from '../../components';
 
 export default function AllJobs() {
-  const dispatch = useDispatch();
-  return;
+  return (
+    <>
+      <JobsContainer />
+      <SearchContainer />
+    </>
+  );
 }
