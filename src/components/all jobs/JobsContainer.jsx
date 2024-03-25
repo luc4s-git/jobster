@@ -41,5 +41,9 @@ export default function JobsContainer() {
     );
   }
 
-  return <Wrapper></Wrapper>;
+  return (
+    <Wrapper>
+      <button onClick={() => dispatch(getAllJobs())}>test dispatch</button>
+    </Wrapper>
+  );
 }
