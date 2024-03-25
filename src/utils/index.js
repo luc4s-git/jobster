@@ -6,6 +6,6 @@ export const instance = axios.create({
 });
 
 export const formatDate = (date) => {
-  const formattedDate = moment(date, moment.ISO_8601);
-  return formattedDate.format('MMM Do, YYYY ');
+  const formattedDate = moment(date, moment.ISO_8601).format('MMM Do, YYYY ');
+  return formattedDate;
 };
