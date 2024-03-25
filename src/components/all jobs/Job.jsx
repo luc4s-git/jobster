@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
 import { FaLocationArrow, FaSuitcase, FaCalendarAlt } from 'react-icons/fa';
 import JobInfo from './JobInfo';
-
 import { formatDate } from '../../utils';
+import { deleteJob } from '../../features/job/jobSlice';
+import { useDispatch } from 'react-redux';
 
 import styled from 'styled-components';
-
 const Wrapper = styled.article`
   background: var(--white);
   border-radius: var(--borderRadius);
@@ -122,6 +122,8 @@ export default function Job({
 }) {
   const date = formatDate(createdAt);
 
+  const dispatch = useDispatch();
+
   return (
     <Wrapper>
       <header>
@@ -148,7 +150,7 @@ export default function Job({
           </Link>
           <button
             className="btn delete-btn"
-            onClick={() => console.log('delete job')}
+            onClick={() => dispatch(deleteJob(_id))}
           >
             Delete
           </button>

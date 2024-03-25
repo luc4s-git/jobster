@@ -46,7 +46,7 @@ export default function JobsContainer() {
     );
   }
 
-  if (jobs.length === 0) {
+  if (jobs?.jobs?.length === 0) {
     return (
       <Wrapper>
         <h2>Nothing here but us chickens...</h2>

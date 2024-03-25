@@ -2,6 +2,10 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 import { getUserFromLocalStorage } from '../../utils/localStorageManipulation';
 
+import { showLoading, hideLoading, getAllJobs } from '../allJobs/allJobsSlice';
+import { logoutUser } from '../user/userSlice';
+import { instance } from '../../utils';
+
 import { addJobThunk } from './jobThunk';
 
 const initialState = {
@@ -20,6 +24,32 @@ const initialState = {
 export const addJob = createAsyncThunk('job/addJob', async (job, thunkAPI) => {
   return addJobThunk('/jobs', job, thunkAPI);
 });
+
+export const deleteJob = createAsyncThunk(
+  'job/deleteJob',
+  async (job, thunkAPI) => {
+    try {
+      const { token } = thunkAPI.getState().user.user;
+
+      const response = await instance.delete(`/jobs/${job}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      thunkAPI.dispatch(getAllJobs());
+
+      return response.data;
+    } catch (error) {
+      if (error.response.status === 401) {
+        thunkAPI.dispatch(logoutUser());
+        return thunkAPI.rejectWithValue('Unauthorized action! Logging out...');
+      }
+
+      return thunkAPI.rejectWithValue(error.response.data.msg);
+    }
+  }
+);
 
 const jobSlice = createSlice({
   name: 'job',
@@ -44,6 +74,17 @@ const jobSlice = createSlice({
         toast.success('Job Created!');
       })
       .addCase(addJob.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        toast.error(payload);
+      })
+      .addCase(deleteJob.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteJob.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        toast.success(payload.msg);
+      })
+      .addCase(deleteJob.rejected, (state, { payload }) => {
         state.isLoading = false;
         toast.error(payload);
       });
