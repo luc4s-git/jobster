@@ -105,6 +105,7 @@ const Wrapper = styled.article`
     visibility: visible;
   }
 `;
+
 export default function Job({
   company,
   position,

@@ -4,6 +4,8 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { getAllJobs } from '../../features/allJobs/allJobsSlice';
 
+import Loading from '../loading/Loading';
+
 import styled from 'styled-components';
 
 const Wrapper = styled.section`
@@ -40,7 +42,15 @@ export default function JobsContainer() {
   if (isLoading) {
     return (
       <Wrapper>
-        <h2>Loading. . .</h2>
+        <Loading center={true}></Loading>
+      </Wrapper>
+    );
+  }
+
+  if (jobs.length === 0) {
+    return (
+      <Wrapper>
+        <h2>Nothing here but us chickens...</h2>
       </Wrapper>
     );
   }

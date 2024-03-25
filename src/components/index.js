@@ -1,4 +1,5 @@
 export { default as Logo } from './header/Logo.jsx';
+export { default as Loading } from './loading/Loading.jsx';
 
 // nav
 export { default as Navbar } from './navbar/Navbar.jsx';
