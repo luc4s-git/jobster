@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { FaLocationArrow, FaSuitcase, FaCalendarAlt } from 'react-icons/fa';
+import JobInfo from './JobInfo';
 
 import styled from 'styled-components';
 
@@ -107,6 +108,7 @@ const Wrapper = styled.article`
 `;
 
 export default function Job({
+  _id,
   company,
   position,
   status,
@@ -127,31 +129,25 @@ export default function Job({
       </header>
       <div className="content">
         <div className="content-center">
-          <div>
-            <span>
-              <FaLocationArrow />
-            </span>
-            <span>{jobLocation}</span>
-          </div>
-          <div>
-            <span>
-              <FaSuitcase />
-            </span>
-            <span>{jobType}</span>
-          </div>
-          <div>
-            <span>
-              <FaCalendarAlt />
-            </span>
-            <span>{createdAt}</span>
-          </div>
-          <div className={`status`}>{status}</div>
+          <JobInfo icon={<FaLocationArrow />} text={jobLocation} />
+          <JobInfo icon={<FaSuitcase />} text={jobType} />
+          <JobInfo icon={<FaCalendarAlt />} text={createdAt} />
+          <div className={`status ${status}`}>{status}</div>
         </div>
         <footer className="actions">
-          <Link className="btn edit-btn" to={'/add-job'}>
+          <Link
+            className="btn edit-btn"
+            to={'/add-job'}
+            onClick={() => console.log('edit job')}
+          >
             Edit
           </Link>
-          <button className="btn delete-btn">Delete</button>
+          <button
+            className="btn delete-btn"
+            onClick={() => console.log('delete job')}
+          >
+            Delete
+          </button>
         </footer>
       </div>
     </Wrapper>

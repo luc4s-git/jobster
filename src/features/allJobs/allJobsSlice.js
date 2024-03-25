@@ -43,8 +43,8 @@ const allJobsSlice = createSlice({
 
 export const getAllJobs = createAsyncThunk(
   'allJobs/getAllJobs',
-  async (jobs, thunkAPI) => {
-    return getAllJobsThunk(jobs, thunkAPI);
+  async (_, thunkAPI) => {
+    return getAllJobsThunk(_, thunkAPI);
   }
 );
 

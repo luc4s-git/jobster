@@ -1,7 +1,7 @@
 import { instance } from '../../utils/index';
 import { logoutUser } from '../user/userSlice';
 
-export const getAllJobsThunk = async (jobs, thunkAPI) => {
+export const getAllJobsThunk = async (_, thunkAPI) => {
   try {
     const { token } = thunkAPI.getState().user.user;
     const response = await instance.get('/jobs', {

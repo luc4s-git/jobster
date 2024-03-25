@@ -32,7 +32,6 @@ const Wrapper = styled.section`
 
 export default function JobsContainer() {
   const { jobs, isLoading } = useSelector((store) => store.allJobs);
-
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -59,7 +58,9 @@ export default function JobsContainer() {
 
   return (
     <Wrapper>
-      <h5>{totalJobs} job found</h5>
+      <h5>
+        {totalJobs} job{totalJobs > 1 ? 's' : ''} found
+      </h5>
       <div className="jobs">
         {jobs?.jobs?.map((job) => {
           return <Job key={job._id} {...job}></Job>;
