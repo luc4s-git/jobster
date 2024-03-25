@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom';
 import { FaLocationArrow, FaSuitcase, FaCalendarAlt } from 'react-icons/fa';
 import JobInfo from './JobInfo';
 
+import { formatDate } from '../../utils';
+
 import styled from 'styled-components';
 
 const Wrapper = styled.article`
@@ -118,6 +120,8 @@ export default function Job({
   createdAt,
   updatedAt,
 }) {
+  const date = formatDate(createdAt);
+
   return (
     <Wrapper>
       <header>
@@ -130,8 +134,8 @@ export default function Job({
       <div className="content">
         <div className="content-center">
           <JobInfo icon={<FaLocationArrow />} text={jobLocation} />
+          <JobInfo icon={<FaCalendarAlt />} text={date} />
           <JobInfo icon={<FaSuitcase />} text={jobType} />
-          <JobInfo icon={<FaCalendarAlt />} text={createdAt} />
           <div className={`status ${status}`}>{status}</div>
         </div>
         <footer className="actions">

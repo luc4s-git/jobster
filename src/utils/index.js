@@ -1,5 +1,11 @@
+import moment from 'moment';
 import axios from 'axios';
 
 export const instance = axios.create({
   baseURL: 'https://jobify-prod.herokuapp.com/api/v1/toolkit',
 });
+
+export const formatDate = (date) => {
+  const formattedDate = moment(date, moment.ISO_8601);
+  return formattedDate.format('MMM Do, YYYY ');
+};
