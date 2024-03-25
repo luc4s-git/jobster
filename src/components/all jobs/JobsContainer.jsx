@@ -33,6 +33,10 @@ export default function JobsContainer() {
 
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(getAllJobs());
+  }, [dispatch]);
+
   if (isLoading) {
     return (
       <Wrapper>
@@ -41,9 +45,16 @@ export default function JobsContainer() {
     );
   }
 
+  const { totalJobs } = jobs;
+
   return (
     <Wrapper>
-      <button onClick={() => dispatch(getAllJobs())}>test dispatch</button>
+      <h5>{totalJobs} job found</h5>
+      <div className="jobs">
+        {jobs?.jobs?.map((job) => {
+          return <Job key={job._id} {...job}></Job>;
+        })}
+      </div>
     </Wrapper>
   );
 }

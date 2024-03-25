@@ -32,7 +32,7 @@ const allJobsSlice = createSlice({
       })
       .addCase(getAllJobs.fulfilled, (state, { payload }) => {
         state.isLoading = false;
-        console.log(payload);
+        state.jobs = payload;
       })
       .addCase(getAllJobs.rejected, (state, { payload }) => {
         state.isLoading = false;
