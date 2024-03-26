@@ -105,13 +105,13 @@ export default function AddJob() {
       return;
     }
 
-    if (!isEditing) {
-      dispatch(addJob({ position, company, jobLocation, jobType, status }));
+    if (isEditing) {
+      dispatch(
+        editJob({ editJobId, position, company, jobLocation, jobType, status })
+      );
     }
 
-    dispatch(
-      editJob({ editJobId, position, company, jobLocation, jobType, status })
-    );
+    dispatch(addJob({ position, company, jobLocation, jobType, status }));
   };
 
   return (

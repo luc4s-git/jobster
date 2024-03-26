@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 import { getUserFromLocalStorage } from '../../utils/localStorageManipulation';
 
-import { showLoading, hideLoading, getAllJobs } from '../allJobs/allJobsSlice';
+import { getAllJobs } from '../allJobs/allJobsSlice';
 import { logoutUser } from '../user/userSlice';
 import { instance } from '../../utils';
 
@@ -72,7 +72,12 @@ export const editJob = createAsyncThunk(
 
       return response.data;
     } catch (error) {
-      console.log(error);
+      if (error.response.status === 401) {
+        thunkAPI.dispatch(logoutUser());
+        return thunkAPI.rejectWithValue('Unauthorized action! Logging out...');
+      }
+
+      return thunkAPI.rejectWithValue(error.response.data.msg);
     }
   }
 );
