@@ -14,3 +14,6 @@ export { default as FormInput } from './form/FormInput.jsx';
 export { default as JobsContainer } from './all jobs/JobsContainer.jsx';
 export { default as Job } from './all jobs/Job.jsx';
 export { default as SearchContainer } from './all jobs/SearchContainer.jsx';
+
+// stats
+export { default as StatCard } from './stats/StatCard.jsx';

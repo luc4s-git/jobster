@@ -130,6 +130,11 @@ export default function Register() {
           type="button"
           className="btn btn-hipster btn-block"
           disabled={isLoading}
+          onClick={() =>
+            dispatch(
+              loginUser({ email: 'testUser@test.com', password: 'secret' })
+            )
+          }
         >
           {isLoading ? 'Loading...' : 'demo app'}
         </button>

@@ -3,6 +3,11 @@ import { toast } from 'react-toastify';
 
 import { getAllJobsThunk } from './allJobsThunk';
 
+// TODO refactor to different file
+import { instance } from '../../utils';
+import { authHeader } from '../../utils';
+import { logoutUser } from '../user/userSlice';
+
 const initialFiltersState = {
   search: '',
   searchStatus: 'all',
@@ -37,6 +42,17 @@ const allJobsSlice = createSlice({
       .addCase(getAllJobs.rejected, (state, { payload }) => {
         state.isLoading = false;
         toast.error(payload);
+      })
+      .addCase(getStats.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getStats.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.stats = payload;
+      })
+      .addCase(getStats.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        toast.error(payload);
       });
   },
 });
@@ -45,6 +61,22 @@ export const getAllJobs = createAsyncThunk(
   'allJobs/getAllJobs',
   async (_, thunkAPI) => {
     return getAllJobsThunk(_, thunkAPI);
+  }
+);
+
+export const getStats = createAsyncThunk(
+  'allJobs/getStats',
+  async (_, thunkAPI) => {
+    try {
+      const response = await instance.get('/jobs/stats', authHeader(thunkAPI));
+      return response.data;
+    } catch (error) {
+      if (error.response.status === 401) {
+        thunkAPI.dispatch(logoutUser());
+        return thunkAPI.rejectWithValue('Unauthorized action! Logging out...');
+      }
+      return thunkAPI.rejectWithValue(error.response.data.msg);
+    }
   }
 );
 
