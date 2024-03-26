@@ -27,11 +27,11 @@ export const addJob = createAsyncThunk('job/addJob', async (job, thunkAPI) => {
 
 export const deleteJob = createAsyncThunk(
   'job/deleteJob',
-  async (job, thunkAPI) => {
+  async (jobId, thunkAPI) => {
     try {
       const { token } = thunkAPI.getState().user.user;
 
-      const response = await instance.delete(`/jobs/${job}`, {
+      const response = await instance.delete(`/jobs/${jobId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -51,6 +51,32 @@ export const deleteJob = createAsyncThunk(
   }
 );
 
+export const editJob = createAsyncThunk(
+  'job/editJob',
+  async (job, thunkAPI) => {
+    try {
+      const { token } = thunkAPI.getState().user.user;
+
+      const { editJobId, position, company, jobLocation, jobType, status } =
+        job;
+
+      const response = await instance.patch(
+        `/jobs/${editJobId}`,
+        { position, company, jobLocation, jobType, status },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
 const jobSlice = createSlice({
   name: 'job',
   initialState: initialState,
@@ -62,6 +88,9 @@ const jobSlice = createSlice({
       return {
         ...initialState,
       };
+    },
+    setEditJob: (state, { payload }) => {
+      return { ...state, isEditing: true, ...payload };
     },
   },
   extraReducers: (builder) => {
@@ -87,9 +116,21 @@ const jobSlice = createSlice({
       .addCase(deleteJob.rejected, (state, { payload }) => {
         state.isLoading = false;
         toast.error(payload);
+      })
+      .addCase(editJob.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(editJob.fulfilled, (state) => {
+        state.isLoading = false;
+        toast.success('Your job was edited successfully!');
+      })
+      .addCase(editJob.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        toast.error(payload);
       });
   },
 });
 
 export default jobSlice.reducer;
-export const { handleInputValues, clearInputValues } = jobSlice.actions;
+export const { handleInputValues, clearInputValues, setEditJob } =
+  jobSlice.actions;

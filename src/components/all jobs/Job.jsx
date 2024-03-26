@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { FaLocationArrow, FaSuitcase, FaCalendarAlt } from 'react-icons/fa';
 import JobInfo from './JobInfo';
 import { formatDate } from '../../utils';
-import { deleteJob } from '../../features/job/jobSlice';
+import { deleteJob, setEditJob } from '../../features/job/jobSlice';
 import { useDispatch } from 'react-redux';
 
 import styled from 'styled-components';
@@ -116,9 +116,7 @@ export default function Job({
   status,
   jobType,
   jobLocation,
-  createdBy,
   createdAt,
-  updatedAt,
 }) {
   const date = formatDate(createdAt);
 
@@ -144,7 +142,18 @@ export default function Job({
           <Link
             className="btn edit-btn"
             to={'/add-job'}
-            onClick={() => console.log('edit job')}
+            onClick={() =>
+              dispatch(
+                setEditJob({
+                  editJobId: _id,
+                  position,
+                  company,
+                  jobLocation,
+                  jobType,
+                  status,
+                })
+              )
+            }
           >
             Edit
           </Link>

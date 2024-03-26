@@ -2,6 +2,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   handleInputValues,
   clearInputValues,
+  editJob,
   addJob,
 } from '../../features/job/jobSlice';
 import { toast } from 'react-toastify';
@@ -84,7 +85,7 @@ export default function AddJob() {
     statusOptions,
     status,
     isEditing,
-    // editJobId,
+    editJobId,
   } = useSelector((store) => store.job);
 
   const dispatch = useDispatch();
@@ -104,7 +105,13 @@ export default function AddJob() {
       return;
     }
 
-    dispatch(addJob({ position, company, jobLocation, jobType, status }));
+    if (!isEditing) {
+      dispatch(addJob({ position, company, jobLocation, jobType, status }));
+    }
+
+    dispatch(
+      editJob({ editJobId, position, company, jobLocation, jobType, status })
+    );
   };
 
   return (
