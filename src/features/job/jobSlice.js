@@ -2,11 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 import { getUserFromLocalStorage } from '../../utils/localStorageManipulation';
 
-import { getAllJobs } from '../allJobs/allJobsSlice';
-import { logoutUser } from '../user/userSlice';
-import { instance } from '../../utils';
-
-import { addJobThunk } from './jobThunk';
+import { addJobThunk, deleteJobThunk, editJobThunk } from './jobThunk';
 
 const initialState = {
   isLoading: false,
@@ -27,58 +23,15 @@ export const addJob = createAsyncThunk('job/addJob', async (job, thunkAPI) => {
 
 export const deleteJob = createAsyncThunk(
   'job/deleteJob',
-  async (jobId, thunkAPI) => {
-    try {
-      const { token } = thunkAPI.getState().user.user;
-
-      const response = await instance.delete(`/jobs/${jobId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      thunkAPI.dispatch(getAllJobs());
-
-      return response.data;
-    } catch (error) {
-      if (error.response.status === 401) {
-        thunkAPI.dispatch(logoutUser());
-        return thunkAPI.rejectWithValue('Unauthorized action! Logging out...');
-      }
-
-      return thunkAPI.rejectWithValue(error.response.data.msg);
-    }
+  async (jobID, thunkAPI) => {
+    return deleteJobThunk('/jobs', jobID, thunkAPI);
   }
 );
 
 export const editJob = createAsyncThunk(
   'job/editJob',
   async (job, thunkAPI) => {
-    try {
-      const { token } = thunkAPI.getState().user.user;
-
-      const { editJobId, position, company, jobLocation, jobType, status } =
-        job;
-
-      const response = await instance.patch(
-        `/jobs/${editJobId}`,
-        { position, company, jobLocation, jobType, status },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      return response.data;
-    } catch (error) {
-      if (error.response.status === 401) {
-        thunkAPI.dispatch(logoutUser());
-        return thunkAPI.rejectWithValue('Unauthorized action! Logging out...');
-      }
-
-      return thunkAPI.rejectWithValue(error.response.data.msg);
-    }
+    return editJobThunk('/jobs', job, thunkAPI);
   }
 );
 

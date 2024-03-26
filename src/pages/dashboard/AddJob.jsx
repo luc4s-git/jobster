@@ -106,7 +106,7 @@ export default function AddJob() {
     }
 
     if (isEditing) {
-      dispatch(
+      return dispatch(
         editJob({ editJobId, position, company, jobLocation, jobType, status })
       );
     }
