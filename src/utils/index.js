@@ -9,3 +9,13 @@ export const formatDate = (date) => {
   const formattedDate = moment(date, moment.ISO_8601).format('MMM Do, YYYY ');
   return formattedDate;
 };
+
+export const authHeader = (thunkAPI) => {
+  const { token } = thunkAPI.getState().user.user;
+
+  return {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+};

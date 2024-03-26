@@ -1,4 +1,4 @@
-import { instance } from '../../utils';
+import { instance, authHeader } from '../../utils';
 import { logoutUser } from './userSlice';
 
 export const registerUserThunk = async (url, user, thunkAPI) => {
@@ -21,13 +21,7 @@ export const loginUserThunk = async (url, user, thunkAPI) => {
 
 export const updateUserThunk = async (url, user, thunkAPI) => {
   try {
-    const { token } = thunkAPI.getState().user.user;
-
-    const response = await instance.patch(url, user, {
-      headers: {
-        Authorization: `Bearer ${token} `,
-      },
-    });
+    const response = await instance.patch(url, user, authHeader(thunkAPI));
 
     return response.data;
   } catch (error) {

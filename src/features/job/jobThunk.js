@@ -1,15 +1,10 @@
-import { instance } from '../../utils';
+import { instance, authHeader } from '../../utils';
 import { logoutUser } from '../user/userSlice';
 import { getAllJobs } from '../allJobs/allJobsSlice';
 
 export const addJobThunk = async (url, job, thunkAPI) => {
   try {
-    const { token } = thunkAPI.getState().user.user;
-    const response = await instance.post(url, job, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await instance.post(url, job, authHeader(thunkAPI));
     return response.data;
   } catch (error) {
     if (error.response.status === 401) {
@@ -22,13 +17,10 @@ export const addJobThunk = async (url, job, thunkAPI) => {
 
 export const deleteJobThunk = async (url, jobID, thunkAPI) => {
   try {
-    const { token } = thunkAPI.getState().user.user;
-
-    const response = await instance.delete(`${url}/${jobID}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await instance.delete(
+      `${url}/${jobID}`,
+      authHeader(thunkAPI)
+    );
 
     thunkAPI.dispatch(getAllJobs());
 
@@ -45,18 +37,12 @@ export const deleteJobThunk = async (url, jobID, thunkAPI) => {
 
 export const editJobThunk = async (url, job, thunkAPI) => {
   try {
-    const { token } = thunkAPI.getState().user.user;
-
     const { editJobId, position, company, jobLocation, jobType, status } = job;
 
     const response = await instance.patch(
       `${url}/${editJobId}`,
       { position, company, jobLocation, jobType, status },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
+      authHeader(thunkAPI)
     );
 
     return response.data;

@@ -1,14 +1,9 @@
-import { instance } from '../../utils/index';
+import { instance, authHeader } from '../../utils/index';
 import { logoutUser } from '../user/userSlice';
 
 export const getAllJobsThunk = async (_, thunkAPI) => {
   try {
-    const { token } = thunkAPI.getState().user.user;
-    const response = await instance.get('/jobs', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await instance.get('/jobs', authHeader(thunkAPI));
 
     return response.data;
   } catch (error) {
