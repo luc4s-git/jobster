@@ -3,6 +3,7 @@ const Wrapper = styled.article`
   padding: 2rem;
   background-color: var(--white);
   border-radius: var(--borderRadius);
+  border-bottom: 5px solid ${(props) => props.color};
   header {
     display: flex;
     align-items: center;
@@ -12,6 +13,7 @@ const Wrapper = styled.article`
     display: block;
     font-weight: 700;
     font-size: 50px;
+    color: ${(props) => props.color};
   }
   .icon {
     width: 70px;
@@ -20,6 +22,8 @@ const Wrapper = styled.article`
     align-items: center;
     justify-content: center;
     border-radius: var(--borderRadius);
+    color: ${(props) => props.color};
+    background-color: ${(props) => props.bcg};
   }
   .icon svg {
     font-size: 2rem;
@@ -37,20 +41,13 @@ export default function StatCard({
   count,
   description,
   color,
-  background,
+  iconBackGroundColor,
 }) {
   return (
-    <Wrapper style={{ borderBottom: `5px solid ${color}` }}>
+    <Wrapper color={color} bcg={iconBackGroundColor}>
       <header>
-        <span style={{ color: color }} className="count">
-          {count}
-        </span>
-        <span
-          style={{ color: color, backgroundColor: background }}
-          className="icon"
-        >
-          {icon}
-        </span>
+        <span className="count">{count}</span>
+        <span className="icon">{icon}</span>
       </header>
       <h5 className="description">{description}</h5>
     </Wrapper>

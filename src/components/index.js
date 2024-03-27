@@ -17,3 +17,5 @@ export { default as SearchContainer } from './all jobs/SearchContainer.jsx';
 
 // stats
 export { default as StatCard } from './stats/StatCard.jsx';
+export { default as StatsContainer } from './stats/StatsContainer.jsx';
+export { default as ChartContainer } from './stats/ChartContainer.jsx';

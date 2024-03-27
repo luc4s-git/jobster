@@ -48,7 +48,8 @@ const allJobsSlice = createSlice({
       })
       .addCase(getStats.fulfilled, (state, { payload }) => {
         state.isLoading = false;
-        state.stats = payload;
+        state.stats = payload.defaultStats;
+        state.monthlyApplications = payload.monthlyApplications;
       })
       .addCase(getStats.rejected, (state, { payload }) => {
         state.isLoading = false;
