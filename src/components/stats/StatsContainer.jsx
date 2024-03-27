@@ -25,9 +25,7 @@ const Wrapper = styled.section`
 
 export default function Stats() {
   const dispatch = useDispatch();
-  const { stats, monthlyApplications, isLoading } = useSelector(
-    (store) => store.allJobs
-  );
+  const { stats, isLoading } = useSelector((store) => store.allJobs);
 
   useEffect(() => {
     dispatch(getStats());

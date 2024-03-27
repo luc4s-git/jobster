@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
-import BarChart from './BarChart';
-import AreaChart from './AreaChart';
+import BarChartComponent from './BarChart';
+import AreaChartComponent from './AreaChart';
 import { useSelector } from 'react-redux';
 
 import styled from 'styled-components';
@@ -9,9 +9,9 @@ const Wrapper = styled.section`
   display: flex;
   align-items: center;
   flex-direction: column;
-  margin-top: 5rem;
+  margin-top: 4rem;
   h4 {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
   }
   button {
     background-color: transparent;
@@ -36,7 +36,11 @@ export default function ChartContainer() {
         {barChart ? 'area chart' : 'bar chart'}
       </button>
 
-      {barChart ? <BarChart /> : <AreaChart />}
+      {barChart ? (
+        <BarChartComponent data={data} />
+      ) : (
+        <AreaChartComponent data={data} />
+      )}
     </Wrapper>
   );
 }
