@@ -67,10 +67,15 @@ export default function PageBtnContainer() {
   });
 
   const handlePrevPage = () => {
-    dispatch(prevPage());
+    const newPage = page - 1;
+    if (newPage === 0) return dispatch(prevPage(numOfPages));
+    dispatch(prevPage(newPage));
   };
+
   const handleNextPage = () => {
-    dispatch(nextPage());
+    const newPage = page + 1;
+    if (newPage > numOfPages) return dispatch(nextPage(1));
+    dispatch(nextPage(newPage));
   };
 
   return (

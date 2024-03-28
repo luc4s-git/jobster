@@ -63,19 +63,13 @@ const allJobsSlice = createSlice({
     changePage: (state, { payload }) => {
       state.page = payload;
     },
-    nextPage: (state) => {
-      if (state.page + 1 > state.numOfPages) {
-        state.page = 1;
-        return;
-      }
-      state.page += 1;
+    nextPage: (state, { payload }) => {
+      const newPage = payload;
+      state.page = newPage;
     },
-    prevPage: (state) => {
-      if (state.page - 1 === 0) {
-        state.page = state.numOfPages;
-        return;
-      }
-      state.page -= 1;
+    prevPage: (state, { payload }) => {
+      const newPage = payload;
+      state.page = newPage;
     },
   },
   extraReducers: (builder) => {
