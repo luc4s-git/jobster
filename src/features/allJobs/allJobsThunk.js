@@ -3,13 +3,16 @@ import { logoutUser } from '../user/userSlice';
 
 export const getAllJobsThunk = async (_, thunkAPI) => {
   try {
-    const { searchType, sort, searchStatus, page } =
+    const { search, searchType, sort, searchStatus, page } =
       thunkAPI.getState().allJobs;
 
-    const response = await instance.get(
-      `/jobs?page=${page}&jobType=${searchType}&sort=${sort}&status=${searchStatus}`,
-      authHeader(thunkAPI)
-    );
+    let url = `/jobs?page=${page}&jobType=${searchType}&sort=${sort}&status=${searchStatus}`;
+
+    if (search) {
+      url = url + `&search=${search}`;
+    }
+
+    const response = await instance.get(url, authHeader(thunkAPI));
 
     return response.data;
   } catch (error) {
