@@ -1,12 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 
-import { getAllJobsThunk } from './allJobsThunk';
-
-// TODO refactor to different file
-import { instance } from '../../utils';
-import { authHeader } from '../../utils';
-import { logoutUser } from '../user/userSlice';
+import { getAllJobsThunk, getStatsThunk } from './allJobsThunk';
 
 const initialFiltersState = {
   search: '',
@@ -29,26 +24,10 @@ const initialState = {
 
 export const getAllJobs = createAsyncThunk(
   'allJobs/getAllJobs',
-  async (_, thunkAPI) => {
-    return getAllJobsThunk(_, thunkAPI);
-  }
+  getAllJobsThunk
 );
 
-export const getStats = createAsyncThunk(
-  'allJobs/getStats',
-  async (_, thunkAPI) => {
-    try {
-      const response = await instance.get('/jobs/stats', authHeader(thunkAPI));
-      return response.data;
-    } catch (error) {
-      if (error.response.status === 401) {
-        thunkAPI.dispatch(logoutUser());
-        return thunkAPI.rejectWithValue('Unauthorized action! Logging out...');
-      }
-      return thunkAPI.rejectWithValue(error.response.data.msg);
-    }
-  }
-);
+export const getStats = createAsyncThunk('allJobs/getStats', getStatsThunk);
 
 const allJobsSlice = createSlice({
   name: 'allJobs',
