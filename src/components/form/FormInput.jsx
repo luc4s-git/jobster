@@ -1,11 +1,4 @@
-export default function FormInput({
-  name,
-  label,
-  type,
-  value,
-  onChange,
-  labelText,
-}) {
+export default function FormInput({ name, label, type, value, onChange }) {
   return (
     <div className="form-row">
       <label htmlFor={name} className="form-label">
