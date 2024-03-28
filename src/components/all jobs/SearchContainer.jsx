@@ -43,6 +43,7 @@ export default function SearchContainer() {
   const { jobTypeOptions, statusOptions } = useSelector((store) => store.job);
 
   const handleInputChange = (e) => {
+    if (isLoading) return;
     dispatch(handleChange({ name: e.target.name, value: e.target.value }));
   };
 

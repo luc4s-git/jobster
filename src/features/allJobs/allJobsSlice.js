@@ -27,45 +27,6 @@ const initialState = {
   ...initialFiltersState,
 };
 
-const allJobsSlice = createSlice({
-  name: 'allJobs',
-  initialState: initialState,
-  reducers: {
-    handleChange: (state, { payload: { name, value } }) => {
-      state[name] = value;
-    },
-    clearFilters: (state) => {
-      return { ...state, ...initialFiltersState };
-    },
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(getAllJobs.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(getAllJobs.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.jobs = payload;
-      })
-      .addCase(getAllJobs.rejected, (state, { payload }) => {
-        state.isLoading = false;
-        toast.error(payload);
-      })
-      .addCase(getStats.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(getStats.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.stats = payload.defaultStats;
-        state.monthlyApplications = payload.monthlyApplications;
-      })
-      .addCase(getStats.rejected, (state, { payload }) => {
-        state.isLoading = false;
-        toast.error(payload);
-      });
-  },
-});
-
 export const getAllJobs = createAsyncThunk(
   'allJobs/getAllJobs',
   async (_, thunkAPI) => {
@@ -89,5 +50,49 @@ export const getStats = createAsyncThunk(
   }
 );
 
+const allJobsSlice = createSlice({
+  name: 'allJobs',
+  initialState: initialState,
+  reducers: {
+    handleChange: (state, { payload: { name, value } }) => {
+      state[name] = value;
+    },
+    clearFilters: (state) => {
+      return { ...state, ...initialFiltersState };
+    },
+    nextPage: (state) => {
+      state.page = state.page + 1;
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getAllJobs.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getAllJobs.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.jobs = payload.jobs;
+        state.numOfPages = payload.numOfPages;
+        state.totalJobs = payload.totalJobs;
+      })
+      .addCase(getAllJobs.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        toast.error(payload);
+      })
+      .addCase(getStats.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getStats.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.stats = payload.defaultStats;
+        state.monthlyApplications = payload.monthlyApplications;
+      })
+      .addCase(getStats.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        toast.error(payload);
+      });
+  },
+});
+
 export default allJobsSlice.reducer;
-export const { handleChange, clearFilters } = allJobsSlice.actions;
+export const { handleChange, clearFilters, nextPage } = allJobsSlice.actions;

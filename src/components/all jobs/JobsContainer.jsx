@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 import Job from './Job';
 import { useSelector, useDispatch } from 'react-redux';
 
+import PageBtnContainer from './PageBtnContainer';
+
 import { getAllJobs } from '../../features/allJobs/allJobsSlice';
 
 import Loading from '../loading/Loading';
@@ -31,7 +33,9 @@ const Wrapper = styled.section`
 `;
 
 export default function JobsContainer() {
-  const { jobs, isLoading } = useSelector((store) => store.allJobs);
+  const { jobs, totalJobs, isLoading, page, numOfPages } = useSelector(
+    (store) => store.allJobs
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -46,7 +50,7 @@ export default function JobsContainer() {
     );
   }
 
-  if (jobs?.jobs?.length === 0) {
+  if (jobs?.length === 0) {
     return (
       <Wrapper>
         <h2>Nothing here but us chickens...</h2>
@@ -54,18 +58,17 @@ export default function JobsContainer() {
     );
   }
 
-  const { totalJobs } = jobs;
-
   return (
     <Wrapper>
       <h5>
-        {totalJobs} job{totalJobs > 1 ? 's' : ''} found
+        {totalJobs} job{totalJobs > 1 && 's'} found
       </h5>
       <div className="jobs">
-        {jobs?.jobs?.map((job) => {
+        {jobs?.map((job) => {
           return <Job key={job._id} {...job}></Job>;
         })}
       </div>
+      {numOfPages > 1 && <PageBtnContainer />}
     </Wrapper>
   );
 }
