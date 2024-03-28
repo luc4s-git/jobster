@@ -3,7 +3,13 @@ import { logoutUser } from '../user/userSlice';
 
 export const getAllJobsThunk = async (_, thunkAPI) => {
   try {
-    const response = await instance.get('/jobs', authHeader(thunkAPI));
+    const { searchType, sort, searchStatus, page } =
+      thunkAPI.getState().allJobs;
+
+    const response = await instance.get(
+      `/jobs?page=${page}&jobType=${searchType}&sort=${sort}&status=${searchStatus}`,
+      authHeader(thunkAPI)
+    );
 
     return response.data;
   } catch (error) {

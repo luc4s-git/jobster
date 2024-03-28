@@ -68,7 +68,7 @@ export default function PageBtnContainer() {
 
   const handlePrevPage = () => {
     const newPage = page - 1;
-    if (newPage === 0) return dispatch(prevPage(numOfPages));
+    if (newPage < 1) return dispatch(prevPage(numOfPages));
     dispatch(prevPage(newPage));
   };
 

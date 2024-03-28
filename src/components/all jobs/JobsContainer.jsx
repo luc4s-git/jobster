@@ -33,14 +33,22 @@ const Wrapper = styled.section`
 `;
 
 export default function JobsContainer() {
-  const { jobs, totalJobs, isLoading, page, numOfPages } = useSelector(
-    (store) => store.allJobs
-  );
+  const {
+    jobs,
+    totalJobs,
+    isLoading,
+    page,
+    numOfPages,
+    search,
+    searchStatus,
+    searchType,
+    sort,
+  } = useSelector((store) => store.allJobs);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getAllJobs());
-  }, [dispatch]);
+  }, [page, search, searchStatus, searchType, sort, dispatch]);
 
   if (isLoading) {
     return (
