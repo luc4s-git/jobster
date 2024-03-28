@@ -30,6 +30,14 @@ const initialState = {
 const allJobsSlice = createSlice({
   name: 'allJobs',
   initialState: initialState,
+  reducers: {
+    handleChange: (state, { payload: { name, value } }) => {
+      state[name] = value;
+    },
+    clearFilters: (state) => {
+      return { ...state, ...initialFiltersState };
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getAllJobs.pending, (state) => {
@@ -82,4 +90,4 @@ export const getStats = createAsyncThunk(
 );
 
 export default allJobsSlice.reducer;
-export const { showLoading, hideLoading } = allJobsSlice.actions;
+export const { handleChange, clearFilters } = allJobsSlice.actions;

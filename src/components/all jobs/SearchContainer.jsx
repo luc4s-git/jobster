@@ -1,6 +1,10 @@
 import { FormInput, FormSelect } from '../index';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
+import {
+  handleChange,
+  clearFilters,
+} from '../../features/allJobs/allJobsSlice';
 
 import styled from 'styled-components';
 const Wrapper = styled.section`
@@ -39,12 +43,12 @@ export default function SearchContainer() {
   const { jobTypeOptions, statusOptions } = useSelector((store) => store.job);
 
   const handleInputChange = (e) => {
-    console.log(e.target.name, e.target.value);
+    dispatch(handleChange({ name: e.target.name, value: e.target.value }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(e.target.value);
+    dispatch(clearFilters());
   };
 
   return (
@@ -65,25 +69,30 @@ export default function SearchContainer() {
             label={'status'}
             name={'searchStatus'}
             value={searchStatus}
-            list={['all', ...statusOptions]}
             onChange={handleInputChange}
+            list={['all', ...statusOptions]}
           />
           {/* type select */}
           <FormSelect
             label={'type'}
-            list={jobTypeOptions}
+            name={'searchType'}
+            value={searchType}
             onChange={handleInputChange}
+            list={['all', ...jobTypeOptions]}
           />
           {/* sort select */}
           <FormSelect
             label={'sort'}
+            name={'sort'}
+            value={sort}
             list={sortOptions}
             onChange={handleInputChange}
           />
           <button
             type="button"
             className="btn btn-block btn-danger"
-            onClick={() => console.log('clear filters')}
+            disabled={isLoading}
+            onClick={(e) => handleSubmit(e)}
           >
             clear filters
           </button>
