@@ -60,8 +60,22 @@ const allJobsSlice = createSlice({
     clearFilters: (state) => {
       return { ...state, ...initialFiltersState };
     },
+    changePage: (state, { payload }) => {
+      state.page = payload;
+    },
     nextPage: (state) => {
-      state.page = state.page + 1;
+      if (state.page + 1 > state.numOfPages) {
+        state.page = 1;
+        return;
+      }
+      state.page += 1;
+    },
+    prevPage: (state) => {
+      if (state.page - 1 === 0) {
+        state.page = state.numOfPages;
+        return;
+      }
+      state.page -= 1;
     },
   },
   extraReducers: (builder) => {
@@ -95,4 +109,5 @@ const allJobsSlice = createSlice({
 });
 
 export default allJobsSlice.reducer;
-export const { handleChange, clearFilters, nextPage } = allJobsSlice.actions;
+export const { handleChange, clearFilters, nextPage, changePage, prevPage } =
+  allJobsSlice.actions;

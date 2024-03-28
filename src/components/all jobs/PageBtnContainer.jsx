@@ -1,5 +1,9 @@
 import { useSelector, useDispatch } from 'react-redux';
-// import { nextPage } from '../../features/allJobs/allJobsSlice';
+import {
+  changePage,
+  nextPage,
+  prevPage,
+} from '../../features/allJobs/allJobsSlice';
 
 import { HiChevronDoubleLeft, HiChevronDoubleRight } from 'react-icons/hi';
 import styled from 'styled-components';
@@ -56,22 +60,22 @@ const Wrapper = styled.section`
 `;
 
 export default function PageBtnContainer() {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const { numOfPages, page } = useSelector((store) => store.allJobs);
   const pages = Array.from({ length: numOfPages }, (_, index) => {
     return index + 1;
   });
 
-  const prevPage = () => {
-    console.log(page - 1);
+  const handlePrevPage = () => {
+    dispatch(prevPage());
   };
-  const nextPage = () => {
-    console.log(page + 1);
+  const handleNextPage = () => {
+    dispatch(nextPage());
   };
 
   return (
     <Wrapper>
-      <button type="button" className="prev-btn" onClick={prevPage}>
+      <button type="button" className="prev-btn" onClick={handlePrevPage}>
         <HiChevronDoubleLeft />
         prev
       </button>
@@ -82,14 +86,14 @@ export default function PageBtnContainer() {
               className={page === item ? 'pageBtn active' : 'pageBtn'}
               type="button"
               key={item}
-              onClick={() => console.log('change page')}
+              onClick={() => dispatch(changePage(item))}
             >
               {item}
             </button>
           );
         })}
       </div>
-      <button className="next-btn" onClick={nextPage}>
+      <button className="next-btn" onClick={handleNextPage}>
         next
         <HiChevronDoubleRight />
       </button>
