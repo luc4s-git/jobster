@@ -10,7 +10,7 @@ import styled from 'styled-components';
 
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { toggleSideBar, logoutUser } from '../../features/user/userSlice';
+import { toggleSideBar, clearStore } from '../../features/user/userSlice';
 import { useNavigate } from 'react-router-dom';
 
 const Wrapper = styled.nav`
@@ -133,7 +133,7 @@ export default function Navbar() {
               className="dropdown-btn"
               onClick={() => {
                 navigate('/landing');
-                dispatch(logoutUser('Logging out...'));
+                dispatch(clearStore('Logging out...'));
               }}
             >
               logout
