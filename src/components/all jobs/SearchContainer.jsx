@@ -1,6 +1,7 @@
 import { FormInput, FormSelect } from '../index';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { useState, useMemo } from 'react';
+
 import {
   handleChange,
   clearFilters,
@@ -37,20 +38,36 @@ const Wrapper = styled.section`
 export default function SearchContainer() {
   const dispatch = useDispatch();
 
+  const [localSearch, setLocalSearch] = useState('');
+
   const { isLoading, search, searchStatus, searchType, sort, sortOptions } =
     useSelector((store) => store.allJobs);
 
   const { jobTypeOptions, statusOptions } = useSelector((store) => store.job);
 
   const handleInputChange = (e) => {
-    if (isLoading) return;
     dispatch(handleChange({ name: e.target.name, value: e.target.value }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setLocalSearch('');
     dispatch(clearFilters());
   };
+
+  const debounce = () => {
+    let timeoutID;
+
+    return (e) => {
+      setLocalSearch(e.target.value);
+      clearTimeout(timeoutID);
+      timeoutID = setTimeout(() => {
+        dispatch(handleChange({ name: e.target.name, value: e.target.value }));
+      }, 1000);
+    };
+  };
+
+  const memoizedDebounce = useMemo(() => debounce(), []);
 
   return (
     <Wrapper>
@@ -62,8 +79,8 @@ export default function SearchContainer() {
             label={'search'}
             name={'search'}
             type={'text'}
-            value={search}
-            onChange={handleInputChange}
+            value={localSearch}
+            onChange={memoizedDebounce}
           />
           {/* status select */}
           <FormSelect
