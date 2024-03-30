@@ -1,4 +1,4 @@
-import { instance, authHeader } from '../../utils';
+import { instance, authHeader, checkForUnauthorizedRequest } from '../../utils';
 import { logoutUser } from './userSlice';
 import { clearAllJobsState } from '../allJobs/allJobsSlice';
 import { clearInputValues } from '../job/jobSlice';
@@ -27,12 +27,7 @@ export const updateUserThunk = async (url, user, thunkAPI) => {
 
     return response.data;
   } catch (error) {
-    if (error.response.status === 401) {
-      thunkAPI.dispatch(logoutUser());
-      return thunkAPI.rejectWithValue('Unauthorized action! Logging out...');
-    }
-
-    return thunkAPI.rejectWithValue(error.response.data.msg);
+    return checkForUnauthorizedRequest(error, thunkAPI);
   }
 };
 

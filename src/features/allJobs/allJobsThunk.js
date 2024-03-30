@@ -1,5 +1,8 @@
-import { instance, authHeader } from '../../utils/index';
-import { logoutUser } from '../user/userSlice';
+import {
+  instance,
+  authHeader,
+  checkForUnauthorizedRequest,
+} from '../../utils/index';
 
 export const getAllJobsThunk = async (_, thunkAPI) => {
   try {
@@ -16,11 +19,7 @@ export const getAllJobsThunk = async (_, thunkAPI) => {
 
     return response.data;
   } catch (error) {
-    if (error.response.status === 401) {
-      thunkAPI.dispatch(logoutUser());
-      return thunkAPI.rejectWithValue('Unauthorized action! Logging out...');
-    }
-    return thunkAPI.rejectWithValue(error.response.data.msg);
+    return checkForUnauthorizedRequest(error, thunkAPI);
   }
 };
 
@@ -29,10 +28,6 @@ export const getStatsThunk = async (_, thunkAPI) => {
     const response = await instance.get('/jobs/stats', authHeader(thunkAPI));
     return response.data;
   } catch (error) {
-    if (error.response.status === 401) {
-      thunkAPI.dispatch(logoutUser());
-      return thunkAPI.rejectWithValue('Unauthorized action! Logging out...');
-    }
-    return thunkAPI.rejectWithValue(error.response.data.msg);
+    return checkForUnauthorizedRequest(error, thunkAPI);
   }
 };
